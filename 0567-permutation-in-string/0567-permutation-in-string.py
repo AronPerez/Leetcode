@@ -16,7 +16,6 @@ class Solution:
                     matches += 1
             # 0 > 2 and s[-2] in counter, 1 > 2 and s[-1] in counter
             # 2 > 2 and s[0] in counter, 3 > 2 and s[1] in counter
-            print(i-window)
             if i >= window and s2[i-window] in counter:
                 if counter[s2[i-window]] == 0:
                     matches -= 1
