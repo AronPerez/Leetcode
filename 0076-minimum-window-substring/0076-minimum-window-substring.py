@@ -1,6 +1,6 @@
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
-        if len(s) > len(s):
+        if len(t) > len(s):
             return ""
         
         need = collections.Counter(t)  # Character counts needed from t
