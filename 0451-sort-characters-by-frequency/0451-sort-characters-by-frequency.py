@@ -1,9 +1,12 @@
 class Solution:
     def frequencySort(self, s: str) -> str:
-        charFreq = Counter(s).most_common()
+        charFreq = Counter(s)
+        
+        sortedCharFreq = sorted(charFreq, key=charFreq.get, reverse=True)
+        
         s = ""    
         
-        for value, freq in charFreq:
-            s += value * freq
+        for char in sortedCharFreq:
+            s += char * charFreq[char]
         
         return s
