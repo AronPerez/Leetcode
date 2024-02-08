@@ -26,7 +26,7 @@ class Solution:
         
         while queue:
             row, col = queue.popleft()
-            # Look left, up, down, right
+            # Look right, down, up
             for directionRow, directionCol in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
                 adjacentRow, adjacentCol = row + directionRow, col + directionCol
                 if 0 <= adjacentRow < rowsCount and 0 <= adjacentCol < colsCount and rooms[adjacentRow][adjacentCol] == INF:    
