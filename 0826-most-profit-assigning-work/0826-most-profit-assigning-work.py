@@ -15,6 +15,7 @@ class Solution:
         for worker in workers: # 4, 5, 6, 7
             
             # Each worker only does 1 job since we are assigning only the max of maxProfitJob
+            # Since i is at 2 and we sort workers by skill, we pickup from where we left off
             while i < len(jobs) and worker >= jobs[i][0]: # Go through jobs and while their skills is enough, get the best paying job
                 maxProfitJob = max(maxProfitJob, jobs[i][1])
                 i += 1
