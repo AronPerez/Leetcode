@@ -33,13 +33,28 @@ class Solution:
 
         return -1
         """
+        
+        def binarySearchHelper(endTime: int) -> int:
+            l, r = 0, n - 1
+            while l <= r:
+                m = l + ((r-l)//2)
+                start, end, profit = jobs[m] # Find at the middle point
+                if start < endTime: # If our start is less than the endtime if what we are looking at
+                    l = m + 1 # Move the left up
+                else: # If the start is before endTime, we can move right down
+                    r = m - 1
+            return l
+                    
+        
+        
         @cache
-        def dfs(i):
+        def dfs(i: int) -> int:
             # When we run out of intervals
-            if i == len(jobs):
+            if i == n:
                 return 0
     
-            j = bisect.bisect(jobs, (jobs[i][1], -1, -1)) # Binary search, looking for the end time
+            # j = bisect.bisect(jobs, (jobs[i][1], -1, -1)) # Binary search, looking for the end time
+            j = binarySearchHelper(jobs[i][1])
             
         
             return max(dfs(i + 1), jobs[i][2] + dfs(j))
