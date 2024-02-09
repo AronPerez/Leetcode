@@ -24,7 +24,6 @@ class Solution:
         while j < len(digits) and digits[j] > digits[i]:
             j += 1
         # 230241/2,1
-        print(i, j)
         # digits[3], digits[4] = 230421
         digits[i], digits[j - 1] = digits[j - 1], digits[i]  # Swap digits[i] and digits[j-1]
         # 4:5 = 21 = 12
