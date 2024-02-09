@@ -1,8 +1,7 @@
 class Solution:
     def jobScheduling(self, startTime: List[int], endTime: List[int], profit: List[int]) -> int:
-        jobs = list(zip(startTime, endTime, profit)) # Sort ascending by start time
-        jobs.sort(key= lambda x: x[0])
-        cache = {}
+        jobs = sorted(zip(startTime, endTime, profit)) # Sort ascending by start time
+        n = len(jobs)
         
         # startA >= endB job A starts before job B ends
         # startB >= endA job B starts after job A ends
@@ -34,23 +33,15 @@ class Solution:
 
         return -1
         """
-        
+        @cache
         def dfs(i):
             # When we run out of intervals
             if i == len(jobs):
                 return 0
-            if i in cache:
-                return cache[i]
-            
-            # Dont include
-            res = dfs(i + 1)
-        
-            # Include
     
             j = bisect.bisect(jobs, (jobs[i][1], -1, -1)) # Binary search, looking for the end time
             
-            
-            cache[i] = res = max(res, jobs[i][2] + dfs(j))
-            return res
+        
+            return max(dfs(i + 1), jobs[i][2] + dfs(j))
         
         return dfs(0) # Start from 0 and go until we have max ans
