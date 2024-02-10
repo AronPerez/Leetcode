@@ -4,7 +4,7 @@ class Solution:
         cols = len(grid2[0])
         count = 0
         
-        @cache
+    
         def dfs(row, col):
             nonlocal valid
             # Make sure we are not out of bounds and are looking at a 1
