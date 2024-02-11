@@ -4,7 +4,8 @@ class Solution:
         rows, cols = len(grid), len(grid[0]) # Gives us amount of rows and cols
         numOfIsland = 0
         # visited = set()
-
+        
+        @cache
         def dfs(row: int, col: int) -> None:
           # nonlocal visited
           # check if we are out of bounds and we have not visited
