@@ -5,7 +5,6 @@ class Solution:
         numOfIsland = 0
         # visited = set()
         
-        @cache
         def dfs(row: int, col: int) -> None:
           # nonlocal visited
           # check if we are out of bounds and we have not visited
