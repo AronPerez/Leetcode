@@ -9,7 +9,7 @@ class Solution:
             # Check if max
             ans = max(ans, currentSubarray)
             
-            if currentSubarray < 1: # If neg, subarray no good
+            if currentSubarray < 0: # If neg, subarray no good
                 currentSubarray = 0
                 
                 
