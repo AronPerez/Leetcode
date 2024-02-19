@@ -1,37 +1,64 @@
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
-        if len(t) > len(s):
+        # every char in t must be in window of s
+        n = len(s)
+        m = len(t)
+        # What if the len of t is greater than s, then we return ""
+       
+        
+        if m > n or t == "":
             return ""
         
-        need = collections.Counter(t)  # Character counts needed from t
-        missing = len(t)  # Characters still needed to complete t
-        left = right = 0  # Pointers for sliding window
-        min_window = float('inf'), None, None  # Initialize minimum window
-
-        while right < len(s):
-            c = s[right] 
-            if c in need:
-                need[c] -= 1
-                if need[c] >= 0:  # Only count characters that are still needed
-                    missing -= 1
-
-            while missing == 0:  # Shrink window if possible
-                c = s[left]
-                # The character at the position pointed by the `left` pointer is no longer a part of the window.
-                if c in need:
-                    need[c] += 1
-                    if need[c] > 0:  # Stop shrinking if a character is no longer sufficient
-                        missing += 1
-                
-                if right - left + 1 < min_window[0]: # Save the smallest window until now.
-                    min_window = (right - left + 1, left, right)
-                
-                # Move the left pointer ahead, this would help to look for a new window.                    
-                left += 1
-            
-            # Keep expanding the window once we are done contracting.
-            right += 1
-
-        return "" if min_window[0] == float('inf') else s[min_window[1]:min_window[2] + 1]
-                           
+        # Need a freq of chars for t
+        # Freq of chars 
+        tCharFreq = Counter(t)
+        windowCharFreq = defaultdict(int)
         
+        have, need = 0, len(tCharFreq)
+        res, resLen = [-1, -1], float('inf')
+        # look at a window that is at min the len of t
+        # l , r = 0, m-1
+        l = 0
+        # Some way to keep track of the values with the min window substring
+        # The first result we find, we only want to find ans smaller than it
+        
+        # while r < n:
+            # Check the values in window l to r
+            # We want their freq
+            # for i in range(l, r):
+               #  windowCharFreq[s[i]] += 1
+            
+            # We need to remove values as we resize
+            
+            # If we have at least 1 value, we keep expanding the right pointer,
+            # Keep track of the min substring how?
+        
+        for r in range(n):
+            # The char
+            c = s[r]
+            
+            # Check the values in window l to r
+            # We want their freq
+            windowCharFreq[c] += 1
+            
+            if c in tCharFreq and windowCharFreq[c] == tCharFreq[c]: # Only care if char is in tCharFreq
+                have += 1 # We have at least 1 value
+                
+            while have == need:
+                tempResLen = (r - l + 1)
+                if tempResLen < resLen: # Update result with new min
+                    res = [l, r]
+                    resLen = tempResLen
+                # Pop from l of the window
+                windowCharFreq[s[l]] -= 1
+                # If by removing char, we took our have, and decremented it by 1
+                if s[l] in tCharFreq and windowCharFreq[s[l]] < tCharFreq[s[l]]:
+                    have -= 1
+                l += 1
+                    
+        
+        # return the min substring
+        l, r = res
+        return s[l:r+1] if resLen != float('inf') else ""
+            
+                
