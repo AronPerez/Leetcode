@@ -8,19 +8,20 @@ class Solution:
                                                  here ^,
         """
         # Insert strictly based on the pos based on startTime
-        
-        pos = bisect.bisect(intervals, newInterval)
-        intervals.insert(pos, newInterval)
-        
         # if newInterval startTime less than interval i's endTime, there is overlap
         # We would need to make sure newInterval endTime is before i+1's startTime
         
         res = []
         
-        for interval in intervals:
-            if not res or res[-1][1] < interval[0]: # endTime of interval i less than startTime of newInterval
-                res.append(interval) # [[1,3]]
+        for i in range(len(intervals)):
+            if newInterval[1] < intervals[i][0]:
+                res.append(newInterval)
+                return res + intervals[i:]
+            elif newInterval[0] > intervals[i][1]:
+                res.append(intervals[i])
             else:
-                res[-1][1] = max(res[-1][1], interval[1])
-            
+                newInterval = [min(newInterval[0], intervals[i][0]), max(newInterval[1], intervals[i][1])]
+                
+        res.append(newInterval)
+        
         return res
