@@ -1,24 +1,22 @@
 class Logger:
 
     def __init__(self):
-        self.messageSet = set()
-        self.messageQueue = deque()
+        # Use a hashtable/dict where the message is the key
+        # Timestmap would be the value
+        self.messages = {}
         
-    def shouldPrintMessage(self, timestamp: int, message: str) -> bool:
-        while self.messageQueue:
-            msg, ts = self.messageQueue[0]
-            if timestamp - ts >= 10: # If 10 seconds have elapsed
-                self.messageQueue.popleft()
-                self.messageSet.remove(msg)
-            else: # 
-                break
-                
-        if message not in self.messageSet: # If msg not seen before, we can log it
-            self.messageSet.add(message)
-            self.messageQueue.append((message, timestamp))
+    def shouldPrintMessage(self, timestamp: int, message: str) -> bool: # Not seen, add to dict and key is timestamp
+        if message not in self.messages:
+            self.messages[message] = timestamp
+            return True
+        
+        # If we are here, we can assume the message key is in the dict
+        if timestamp - self.messages[message] >= 10: # If 10 or more secs has elapsed since the last time the key was logged
+            self.messages[message] = timestamp
             return True
         else:
             return False
+       
             
         
 
