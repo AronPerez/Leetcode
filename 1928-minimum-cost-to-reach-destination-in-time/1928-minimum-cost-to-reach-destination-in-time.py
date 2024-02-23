@@ -24,33 +24,38 @@ class Solution:
             # Repeat the process
             # Once I get the a city that has no other refs where it is x_i, I know I am done
             
-        graph = defaultdict(list)
-        
-        for u, v, t in edges:
-            graph[u].append((v,t))
-            graph[v].append((u,t))
-            
+        # Build our graph
+        graph = self.build_graph(edges)
         n = len(passingFees)
-        
-        fees = [float('inf')] * n
-        times = [maxTime] * n
-        fees[0] = passingFees[0]
-        times[0] = 0
-        
-        priorityQueue = [(passingFees[0], 0, 0)] # Fee, time, node
-        
-        while priorityQueue:
-            fee, time, u = heappop(priorityQueue)
-            
-            for (v, t) in graph[u]: # for node2 and time, how do we improve?
-                if time+t <= maxTime and (fee+passingFees[v] < fees[v] or time+t < times[v]): # If we can make improvement
-                    heappush(priorityQueue, (fee+passingFees[v], time+t, v))
-                    if fee+passingFees[v] < fees[v]:
-                        fees[v] = fee+passingFees[v]
-                    if time+t < times[v]:
-                        times[v] = time+t
-                        
-        return fees[-1] if fees[-1] < sys.maxsize else -1
+
+        start_state = (passingFees[0], 0, 0)  # (cost, time, city)
+        heap = [start_state]
+        visited = set()
+
+        while heap:
+            cost, time, city = heapq.heappop(heap)
+
+            if city == n - 1:
+                return cost
+
+            if (city, time) in visited:
+                continue  # Already visited with a better cost or time
+            visited.add((city, time))
+
+            for neighbor, travel_time in graph[city]:
+                new_cost = cost + passingFees[neighbor]
+                new_time = time + travel_time
+                if new_time <= maxTime:
+                    heapq.heappush(heap, (new_cost, new_time, neighbor))
+
+        return -1  # Couldn't reach the destination
+    
+    def build_graph(self, edges):
+        graph = defaultdict(list)
+        for city1, city2, time in edges:
+            graph[city1].append((city2, time))
+            graph[city2].append((city1, time))  # Bidirectional
+        return graph
         
         
         
