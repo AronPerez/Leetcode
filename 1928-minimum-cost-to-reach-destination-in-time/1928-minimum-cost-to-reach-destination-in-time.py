@@ -32,7 +32,7 @@ class Solution:
             
         n = len(passingFees)
         
-        fees = [sys.maxsize] * n
+        fees = [float('inf')] * n
         times = [maxTime] * n
         fees[0] = passingFees[0]
         times[0] = 0
