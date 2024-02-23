@@ -1,8 +1,5 @@
 class Solution:
     def isSubsequence(self, s: str, t: str) -> bool:
-        if not s:
-            return True
-
         j = 0
         m = len(s)
         
