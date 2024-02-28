@@ -10,21 +10,13 @@ class Solution:
 
         
         while queue:
-            tree1, tree2 = queue.popleft()
+            p, q = queue.popleft()
             
-            if tree1 is None and tree2 is None:
-                continue
-            elif tree1 is None:
+            if p and q and p.val == q.val: # Must check if vals are equal
+                queue.append((p.left, q.left))  # We need to check left next level 
+                queue.append((p.right, q.right))  # We need to check left next level 
+            elif p or q:
                 return False
-            elif tree2 is None:
-                return False
-            
-            if tree1.val != tree2.val: # Must check if vals are equal
-                return False
-            
-            
-            queue.append((tree1.left, tree2.left))  # We need to check left next level 
-            queue.append((tree1.right, tree2.right))  # We need to check left next level 
             
         return True
                 
