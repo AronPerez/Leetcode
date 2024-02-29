@@ -43,7 +43,8 @@ class Solution:
                 if grid[row][col] == 1: 
                     numOfHouses += 1
        
-        def bfs(row, col, numOfHouses):
+        def bfs(row, col):
+            nonlocal numOfHouses
             distanceSum = currentHouseCount = 0
             queue = deque([(row, col, 0)])
             visited = set()
@@ -85,7 +86,7 @@ class Solution:
         for row in range(rows):
             for col in range(cols):
                 if grid[row][col] == 0:
-                    minDistance = min(minDistance,  bfs(row, col, numOfHouses))
+                    minDistance = min(minDistance,  bfs(row, col))
                     
                     
         return minDistance if minDistance != float('inf') else -1
