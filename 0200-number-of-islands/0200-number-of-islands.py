@@ -3,33 +3,27 @@ class Solution:
         # # We wil alwaus have an island
         rows, cols = len(grid), len(grid[0]) # Gives us amount of rows and cols
         numOfIsland = 0
-        # visited = set()
         
         def dfs(row: int, col: int) -> None:
-          # nonlocal visited
-          # check if we are out of bounds and we have not visited
-            if (row < 0 or col < 0 or row >= rows or col >= cols or grid[row][col] == "0" or grid[row][col] == "#"):
-            # print((row, col) in visited)
-                return 
+            # check if we are out of bounds and we have not visited
+            if 0 <= row < rows and 0 <= col < cols and grid[row][col] == "1":
 
-            # We need to know we have visited
-            # visited.add((row, col)) # {(0,0)}/ {(0,0), (0, 1))}/{(0,0), (0, 1)), (1,1)}/ {(0,0), (0, 1)), (1,1), (0,1)}
-            # visited[row][col] = True
-            grid[row][col] = "#"
+                grid[row][col] = "0"
 
-          # left, right, up, down
-            dfs(row-1, col) # ob/in seen/1/ob
-            dfs(row+1, col) # 1/is 0/inseen/0
-            dfs(row, col+1) # ob/inseen/inSeen/ob
-            dfs(row, col-1) # 1/0/0/inSeen
-              # if 0 <= row < rows and 0 <= col < cols and (row, col) not in visited:
+                dfs(row-1, col)
+                dfs(row+1, col)
+                dfs(row, col+1)
+                dfs(row, col-1)
+            else: # Out of bounds
+                return
 
 
-        for row in range(rows): # 0
-            for col in range(cols): # 0
-                if grid[row][col] == '1' and grid[row][col] != "#": # true,
+        for row in range(rows):
+            for col in range(cols):
+                if grid[row][col] == "1":
                     dfs(row, col)
-                    numOfIsland += 1 # 1
+                    numOfIsland += 1
 
  
         return numOfIsland # 1
+        
