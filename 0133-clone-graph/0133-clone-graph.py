@@ -9,27 +9,34 @@ class Node:
 from typing import Optional
 class Solution:
     def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
-        # Base cases
-        if not node:
-            return node
+        visited = {}
+        
+        def dfs(node: Optional['Node']):
+            nonlocal visited
+            # Base cases
+            if not node:
+                return node
+            
+            # If the node was already visited before.
+            # Return the clone from the visited dictionary.
+            if node in visited:
+                return visited[node]
+            
+            # Create a clone for the given node.
+            # Note that we don't have cloned neighbors as of now, hence [].
+            clone_node = Node(node.val, [])
+            
+            # The key is original node and value being the clone node.
+            visited[node] = clone_node
+            
+            # Iterate through the neighbors to generate their clones
+            # and prepare a list of cloned neighbors to be added to the cloned node.
+            if node.neighbors:
+                clone_node.neighbors = [dfs(n) for n in node.neighbors]
 
-        ans = {}
-        queue = deque([node])
-        # Clone the node and put it in the visited dictionary.
-        ans[node] = Node(node.val, [])
-
-        # BFS
-        while queue:
-            currentNode = queue.popleft()
-            # Go through all neighbors
-            for child in currentNode.neighbors: # is Node class
-                if child not in ans: # Haven't seen before, enqueue
-                    ans[child] = Node(child.val, []) # Clone the neighbor and put in the visited, if not present already
-                    queue.append(child) # We will process later
-                # Add the clone of the neighbor to the neighbors of the clone node "n".
-                ans[currentNode].neighbors.append(ans[child])
+            return clone_node
                 
-        return ans[node]
+        return dfs(node)
                 
                     
                     
