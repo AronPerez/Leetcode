@@ -1,62 +1,37 @@
 class Solution:
     def jobScheduling(self, startTime: List[int], endTime: List[int], profit: List[int]) -> int:
-        jobs = sorted(zip(startTime, endTime, profit)) # Sort ascending by start time
-        n = len(jobs)
-        
-        # startA >= endB job A starts before job B ends
-        # startB >= endA job B starts after job A ends
-        
-        # Combinatorics 2^n possible jobs to schedule where n is number of jobs
-        
-        # Schedule jobs at index i which end at end[i], then all jobs that have start time before then are discarded
-        # The next job to schedule should have start[i] >= end[i] (must start at or after end)
-        
-        # Conflicting schedules + max profit by scheduling non-conflicting schedules lean towards DP
-        
-        
-        # Top down approach starts from time zero/earliest start time
-        # Since the jobs are sorted by ascending start time, we can use binary search
-        # In our binary serch our target is the endTime
-        
-        """ Binary search 
-        l, r = 0, len(nums) -1
-
-        while l <= r:
-            mid = l + ((r - l) // 2)
-
-            if nums[mid] > target: # Number is bigger
-                r = mid - 1
-            elif nums[mid] < target: # Number is smaller
-                l = mid + 1
-            else:
-                return mid
-
-        return -1
-        """
-        
-        def binarySearchHelper(endTime: int) -> int:
-            l, r = 0, n - 1
-            while l <= r:
-                m = l + ((r-l)//2)
-                start, end, profit = jobs[m] # Find at the middle point
-                if start < endTime: # If our start is less than the endtime if what we are looking at
-                    l = m + 1 # Move the left up
-                else: # If the start is before endTime, we can move right down
-                    r = m - 1
-            return l
-                    
-        
-        
-        @cache
-        def dfs(i: int) -> int:
-            # When we run out of intervals
-            if i == n:
-                return 0
+        n = len(startTime)  # Get the number of jobs
     
-            # j = bisect.bisect(jobs, (jobs[i][1], -1, -1)) # Binary search, looking for the end time
-            j = binarySearchHelper(jobs[i][1])
-            
+        # Create a list of jobs with their start time, end time, and profit
+        jobs = sorted(zip(startTime, endTime, profit), key=lambda x: x[1])
+
+        dp = [0] * (n + 1)  # Create a DP array to store the maximum profit up to each job
+
+        def binarySearch(jobs, index):
+            left, right = 0, index - 1
+            while left <= right:
+                mid = left + (right - left) // 2
+                if jobs[mid][1] <= jobs[index][0]:
+                    if jobs[mid + 1][1] <= jobs[index][0]:
+                        left = mid + 1
+                    else:
+                        return mid
+                else:
+                    right = mid - 1
+            return -1
+
+        for i in range(1, n + 1):  # Iterate through each job
+            current_profit = jobs[i - 1][2]  # Get the profit of the current job
+
+            # Find the index of the previous non-overlapping job using binary search
+            prev_job_index = binarySearch(jobs, i - 1)
+
+            # Calculate the maximum profit by considering the current job's profit
+            # and the maximum profit from the previous non-overlapping jobs
+            if prev_job_index != -1:
+                dp[i] = max(current_profit + dp[prev_job_index + 1], dp[i - 1])
+            else:
+                dp[i] = max(current_profit, dp[i - 1])
+
+        return dp[n]  # Return the maximum profit
         
-            return max(dfs(i + 1), jobs[i][2] + dfs(j))
-        
-        return dfs(0) # Start from 0 and go until we have max ans
