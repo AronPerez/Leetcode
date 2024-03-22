@@ -1,16 +1,5 @@
 class Solution:
     def trap(self, height: List[int]) -> int:
-        # Start from 0 and 1
-        
-        # cannot trap water from start unless has height
-        
-        # We need to keep going until the l finds a height of at least 1 or more
-        
-        # Once we find, move r until we find even or higher level
-            # Get all depths between then
-        
-        # from l to r, get heights, take diff from water level to get how much water can store
-            # add to total
         n = len(height)  # Get the length of the height array
         left = 0  # Initialize the left pointer
         right = n - 1  # Initialize the right pointer
