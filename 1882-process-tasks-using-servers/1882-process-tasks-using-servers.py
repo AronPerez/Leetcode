@@ -34,26 +34,26 @@ class Solution:
         """
         
         ans = []
-        availableServers = [(w, i) for i, w in enumerate(servers)]                              # 1
-        heapq.heapify(availableServers)                                                         # 2
-        unavailableServers = []                                                                 # 3
+        availableServers = [(w, i) for i, w in enumerate(servers)]                                  # 1
+        heapq.heapify(availableServers)                                                             # 2
+        unavailableServers = []                                                                     # 3
         
-        for time, taskDuration in enumerate(tasks):                                             # 4
+        for time, taskDuration in enumerate(tasks):                                                 # 4
             
-            while unavailableServers and unavailableServers[0][0] <= time:                      # 5               
-                _, weight, serverIndex = heapq.heappop(unavailableServers)                      # 5a
-                heapq.heappush(availableServers, (weight, serverIndex))                         # 5b
+            while unavailableServers and unavailableServers[0][0] <= time:                          # 5               
+                _, weight, serverIndex = heapq.heappop(unavailableServers)                          # 5a
+                heapq.heappush(availableServers, (weight, serverIndex))                             # 5b
                 
-            if availableServers:                                                                # 6
-                weight, serverIndex = heapq.heappop(availableServers)                           # 6a
-                heapq.heappush(unavailableServers, (time + taskDuration, weight, serverIndex))  # 6b
-                ans.append(serverIndex)                                                         # 6c
-            else:                                                                               # 7
-                finishTime, weight, serverIndex = heapq.heappop(unavailableServers)             # 7a
-                heapq.heappush(unavailableServers, (finishTime + taskDuration, weight, serverIndex))  # 7b
-                ans.append(serverIndex)                                                         # 7c
+            if availableServers:                                                                    # 6
+                weight, serverIndex = heapq.heappop(availableServers)                               # 6a
+                heapq.heappush(unavailableServers, (time + taskDuration, weight, serverIndex))      # 6b
+                ans.append(serverIndex)                                                             # 6c
+            else:                                                                                   # 7
+                finishTime, weight, serverIndex = heapq.heappop(unavailableServers)                 # 7a
+                heapq.heappush(unavailableServers, (finishTime + taskDuration, weight, serverIndex))# 7b
+                ans.append(serverIndex)                                                             # 7c
                 
-        return ans                                                                              # 8
+        return ans                                                                                  # 8
                 
             
             
